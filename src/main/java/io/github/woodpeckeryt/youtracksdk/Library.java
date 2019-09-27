@@ -3,8 +3,13 @@
  */
 package io.github.woodpeckeryt.youtracksdk;
 
+import io.github.woodpeckeryt.youtracksdk.transport.YouTrackTransport;
+
+import java.io.IOException;
+
 public class Library {
-    public boolean someLibraryMethod() {
-        return true;
+    public static void main(String[] args) throws IOException {
+        YouTrackTransport transport = new YouTrackTransport();
+        transport.sendGetRequest();
     }
 }
