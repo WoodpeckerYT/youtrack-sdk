@@ -1,6 +1,7 @@
 package io.github.woodpeckeryt.youtracksdk.parse;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import io.github.woodpeckeryt.youtracksdk.entities.YouTrack;
 import io.github.woodpeckeryt.youtracksdk.issue.Issue;
@@ -24,7 +25,11 @@ public class JsonParser {
     Type itemsListType = new TypeToken<List<Issue>>() {
     }.getType();
 
+
     List<Issue> issue = gson.fromJson(issues, itemsListType);
+        JsonObject jsonObject = new JsonObject();
+
+
 
         System.out.println(issues);
         System.out.println("-------------------------------------------------------------");
