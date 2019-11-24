@@ -24,4 +24,22 @@ public class Issue {
     public String getSummary() {
         return summary;
     }
+
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "numberInProject=" + numberInProject +
+                ", summary='" + summary + '\'' +
+                ", description='" + description + '\'' +
+                ", idReadable='" + idReadable + '\'' +
+                ", usesMarkdown=" + usesMarkdown +
+                ", wikifiedDescription='" + wikifiedDescription + '\'' +
+                ", isDraft=" + isDraft +
+                ", votes=" + votes +
+                ", commentsCount=" + commentsCount +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", resolved=" + resolved +
+                '}';
+    }
 }
