@@ -1,5 +1,6 @@
 package io.github.woodpeckeryt.youtracksdk.issue;
 
+import com.google.gson.Gson;
 import io.github.woodpeckeryt.youtracksdk.transport.Transport;
 
 public class IssueService {
@@ -11,9 +12,12 @@ public class IssueService {
         this.projectId = projectId;
     }
 
-    public String getIssuesInProject() {
+    public Issue getIssuesInProject() {
         String issuePath = "/api/admin/projects/" + this.projectId
             + "/issues?fields=idReadable,created,updated,resolved,numberInProject,project(name),summary,description,usesMarkdown,wikifiedDescription,reporter,updater,draftOwner,isDraft,visibility,votes,comments,commentsCount,tags,links,externalIssue,customFields,voters,watchers,attachments,subtasks,parent";
-        return this.transport.sendGetRequest(issuePath);
+
+        String response = this.transport.sendGetRequest(issuePath);
+
+        return new Gson().fromJson(response, Issue.class);
     }
 }
