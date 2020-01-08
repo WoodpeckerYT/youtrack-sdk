@@ -36,12 +36,13 @@ archivesBaseName = 'youtrack-sdk'
 version = generateVersionCode()
 
 def static generateVersionCode() {
-    def lastTagRev = "git rev-list --tags --max-count=1".execute()
-    def lastTag = "git describe ${lastTagRev.text}".execute()
-    def shortRev = "git rev-parse --short HEAD".execute()
-    def isSnapshot = "git rev-parse --abbrev-ref HEAD".execute().equals("master")
+    def lastTagRev = "git rev-list --tags --max-count=1".execute().text.trim()
+    def lastTag = "git describe ${lastTagRev.text}".execute().text.trim()
+    def shortRev = "git rev-parse --short HEAD".execute().text.trim()
+    def branchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
+    def isSnapshot = branchName.equalsIgnoreCase('master')
 
-    def version = "${lastTag.text.trim()}"
+    def version = "${lastTag}"
     if (!isSnapshot) {
         version = "${version}-SNAPSHOT"
     }
