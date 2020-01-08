@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
 }
 
 repositories {
@@ -29,3 +30,46 @@ test {
 wrapper {
     gradleVersion = '6.0.1'
 }
+
+group 'io.github.rmuhamedgaliev'
+archivesBaseName = 'youtrack-sdk'
+version = generateVersionCode()
+
+def static generateVersionCode() {
+    def lastTagRev = "git rev-list --tags --max-count=1".execute()
+    def lastTag = "git describe ${lastTagRev.text}".execute()
+    def shortRev = "git rev-parse --short HEAD".execute()
+    def isSnapshot = "git rev-parse --abbrev-ref HEAD".execute().equals("master")
+
+    def version = "${lastTag.text.trim()}"
+    if (!isSnapshot) {
+        version = "${version}-SNAPSHOT"
+    }
+    return version
+}
+
+//jar {
+//    manifest {
+//        attributes("Implementation-Title": "Gradle",
+//                "Implementation-Version": generateVersionCode())
+//    }
+//}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/WoodpeckerYT/youtrack-sdk")
+            credentials {
+                username = findProperty("gprUser") ?: System.getenv("USERNAME")
+                password = findProperty("gprKey") ?: System.getenv("PASSWORD")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
