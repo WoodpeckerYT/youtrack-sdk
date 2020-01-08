@@ -13,9 +13,11 @@ jobs:
         architecture: x64
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Extract branch name
+      shell: bash
+      run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
     - name: Publish to mvn
       env:
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        BRANCH_NAME: ${{ GITHUB_REF##*/ }}
       run: ./gradlew publish
