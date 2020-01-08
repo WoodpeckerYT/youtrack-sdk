@@ -17,4 +17,4 @@ jobs:
       env:
         USERNAME: ${{ USERNAME }}
         PASSWORD: ${{ PASSWORD }}
-      run: ./gradlew publish
+      run: echo ${USERNAME}
