@@ -43,6 +43,8 @@ def static generateVersionCode() {
     def branchName = System.getenv("BRANCH_NAME") ?: gitBranchName
     def isSnapshot = branchName.equalsIgnoreCase('master')
 
+    println(branchName)
+
     def version = "${lastTag}"
     if (!isSnapshot) {
         version = "${version}-SNAPSHOT"
