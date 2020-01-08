@@ -37,7 +37,7 @@ version = generateVersionCode()
 
 def static generateVersionCode() {
     def lastTagRev = "git rev-list --tags --max-count=1".execute().text.trim()
-    def lastTag = "git describe ${lastTagRev.text}".execute().text.trim()
+    def lastTag = "git describe ${lastTagRev}".execute().text.trim()
     def shortRev = "git rev-parse --short HEAD".execute().text.trim()
     def branchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     def isSnapshot = branchName.equalsIgnoreCase('master')
