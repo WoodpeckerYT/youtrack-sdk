@@ -42,6 +42,8 @@ def static generateVersionCode() {
     def branchName = "git rev-parse --abbrev-ref HEAD".execute().text.trim()
     def isSnapshot = branchName.equalsIgnoreCase('master')
 
+    println(branchName)
+
     def version = "${lastTag}"
     if (!isSnapshot) {
         version = "${version}-SNAPSHOT"
