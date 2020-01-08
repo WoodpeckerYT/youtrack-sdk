@@ -17,5 +17,5 @@ jobs:
       env:
         USERNAME: ${{ secrets.USERNAME }}
         PASSWORD: ${{ secrets.PASSWORD }}
-        BRANCH_NAME: ${GITHUB_REF##*/}
+        BRANCH_NAME: ${{ GITHUB_REF##*/ }}
       run: ./gradlew publish
