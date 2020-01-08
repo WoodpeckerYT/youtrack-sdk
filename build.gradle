@@ -27,10 +27,6 @@ test {
     useJUnitPlatform()
 }
 
-wrapper {
-    gradleVersion = '6.0.1'
-}
-
 group 'io.github.rmuhamedgaliev'
 archivesBaseName = 'youtrack-sdk'
 version = generateVersionCode()
@@ -49,13 +45,6 @@ def static generateVersionCode() {
     }
     return version
 }
-
-//jar {
-//    manifest {
-//        attributes("Implementation-Title": "Gradle",
-//                "Implementation-Version": generateVersionCode())
-//    }
-//}
 
 publishing {
     repositories {

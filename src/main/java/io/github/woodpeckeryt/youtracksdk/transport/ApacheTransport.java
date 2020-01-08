@@ -11,6 +11,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public final class ApacheTransport implements Transport {
     private final String token;
@@ -53,12 +54,12 @@ public final class ApacheTransport implements Transport {
             ) {
             HttpPost httpPost = new HttpPost(this.host + path);
             String requestData = new Gson().toJson(sendObject);
-            StringEntity entity = new StringEntity(requestData);
+            StringEntity entity = new StringEntity(requestData, StandardCharsets.UTF_8);
             httpPost.setHeader("Authorization", "Bearer " + this.token);
             entity.setContentType("application/json");
             httpPost.setEntity(entity);
             httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("Content-type", "application/json; charset=utf-8");
 
             CloseableHttpResponse response = client.execute(httpPost);
 
