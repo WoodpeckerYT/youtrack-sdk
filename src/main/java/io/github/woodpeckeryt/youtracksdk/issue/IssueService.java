@@ -23,9 +23,12 @@ public class IssueService {
 
         Issue[] issues = new Gson().fromJson(response, Issue[].class);
 
-        System.out.println(issues.length);
-
         return issues;
+    }
+
+    public void getIssuesbyUser(String user){
+
+
     }
 
     public Issue getIssuesInProject(String projectId) {
