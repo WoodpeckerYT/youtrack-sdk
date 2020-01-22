@@ -18,6 +18,8 @@ public class Tracker {
 
         for (Issue i:issues) {
             System.out.println(i);
+
+            System.out.println(i.getUpdater());
         }
 
 

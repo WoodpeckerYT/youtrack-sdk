@@ -37,6 +37,10 @@ public class Issue {
         return numberInProject;
     }
 
+    public Object getUpdater() {
+        return updater;
+    }
+
     public String getSummary() {
         return summary;
     }
