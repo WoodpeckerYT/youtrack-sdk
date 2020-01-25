@@ -1,5 +1,9 @@
 package io.github.woodpeckeryt.youtracksdk.issue;
 
+import io.github.woodpeckeryt.youtracksdk.user.User;
+
+import java.util.List;
+
 public class Issue {
     private Long numberInProject;
     private String summary;
@@ -16,22 +20,28 @@ public class Issue {
     private Long updated;
     private Long resolved;
 
-    //new fields
-    private Object links;
-    private Object visibility;
-    private Object project;
-    private Object watchers;
-    private Object voters;
-    private Object reporter;
-    private String draftOwner;
-    private Object attachments;
-    private Object comments;
-    private Object tags;
-    private Object subtasks;
-    private Object customFields;
-    private Object updater;
+    private Object links; //	Array of IssueLinks
+    private Object visibility; //  "visibility" : "Visibility",
+    private Object project; // "project" : "Project",
+    private Object watchers; //"watchers" : "IssueWatchers",
+    private Object voters;//  "voters" : "IssueVoters",
+    private Object reporter; //  "reporter" : "User",
+    private String draftOwner; // "draftOwner" : "User",
+    private Object attachments; //	Array of IssueAttachments
+    private Object comments; //MutableCollection
+    private Object tags;// "tags" : "MutableCollection",
+    private Object subtasks;//"subtasks" : "IssueLink",
+    private List customFields;
+    private User updater; //"updater" : "User",
     private String C;
-    private Object parent;
+    private Object parent; //	IssueLink
+
+
+
+
+    public Long getCreated() {
+        return created;
+    }
 
     public Long getNumberInProject() {
         return numberInProject;
@@ -43,6 +53,14 @@ public class Issue {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getIdReadable() {
+        return idReadable;
+    }
+
+    public String getC() {
+        return C;
     }
 
     @Override
