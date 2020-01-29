@@ -25,8 +25,8 @@ public class Issue {
     private Object project; // "project" : "Project",
     private Object watchers; //"watchers" : "IssueWatchers",
     private Object voters;//  "voters" : "IssueVoters",
-    private Object reporter; //  "reporter" : "User",
-    private String draftOwner; // "draftOwner" : "User",
+    private User reporter; //  "reporter" : "User",
+    private User draftOwner; // "draftOwner" : "User",
     private Object attachments; //	Array of IssueAttachments
     private Object comments; //MutableCollection
     private Object tags;// "tags" : "MutableCollection",
@@ -36,8 +36,13 @@ public class Issue {
     private String C;
     private Object parent; //	IssueLink
 
+    public List getCustomFields() {
+        return customFields;
+    }
 
-
+    public Object getProject() {
+        return project;
+    }
 
     public Long getCreated() {
         return created;
@@ -47,7 +52,7 @@ public class Issue {
         return numberInProject;
     }
 
-    public Object getUpdater() {
+    public User getUpdater() {
         return updater;
     }
 
@@ -61,6 +66,10 @@ public class Issue {
 
     public String getC() {
         return C;
+    }
+
+    public User getReporter() {
+        return reporter;
     }
 
     @Override
@@ -84,7 +93,7 @@ public class Issue {
                 ", watchers=" + watchers +
                 ", voters=" + voters +
                 ", reporter=" + reporter +
-                ", draftOwner='" + draftOwner + '\'' +
+                ", draftOwner=" + draftOwner +
                 ", attachments=" + attachments +
                 ", comments=" + comments +
                 ", tags=" + tags +
