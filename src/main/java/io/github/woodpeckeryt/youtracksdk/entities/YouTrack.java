@@ -9,7 +9,7 @@ public class YouTrack {
     private final String token;
     private final String host;
 
-    private final Transport gsonTransport;
+    private final Transport apacheTransport;
 
     private final IssueService issueService;
     private final UserService userService;
@@ -18,9 +18,9 @@ public class YouTrack {
         this.token = token;
         this.host = host;
 
-        this.gsonTransport = new ApacheTransport(this.token, this.host);
-        this.issueService = new IssueService(this.gsonTransport);
-        this.userService = new UserService(this.gsonTransport);
+        this.apacheTransport = new ApacheTransport(this.token, this.host);
+        this.issueService = new IssueService(this.apacheTransport);
+        this.userService = new UserService(this.apacheTransport);
     }
 
     public IssueService getIssueService() {

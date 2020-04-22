@@ -37,17 +37,4 @@ public class User {
     public Boolean getBanned() {
         return banned;
     }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "avatarUrl='" + avatarUrl + '\'' +
-                ", login='" + login + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", jabberAccountName='" + jabberAccountName + '\'' +
-                ", ringId='" + ringId + '\'' +
-                ", banned=" + banned +
-                '}';
-    }
 }

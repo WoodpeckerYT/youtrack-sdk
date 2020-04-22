@@ -6,6 +6,7 @@ import io.github.woodpeckeryt.youtracksdk.transport.ApacheTransport;
 import io.github.woodpeckeryt.youtracksdk.transport.Transport;
 import io.github.woodpeckeryt.youtracksdk.user.User;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -20,42 +21,16 @@ public class IssueService {
 
         String issuePath = "/api/admin/projects/" + projectId
                 + "/issues?fields=idReadable,created,updated,resolved,numberInProject,project(name),summary,description,usesMarkdown,wikifiedDescription,reporter,updater,draftOwner,isDraft,visibility,votes,comments,commentsCount,tags,links,externalIssue,customFields,voters,watchers,attachments,subtasks,parent";
-        String response = this.gsonTransport.sendGetRequest(issuePath);
+        String response = null;
+        try {
+            response = this.gsonTransport.sendGetRequest(issuePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Issue[] issues = new Gson().fromJson(response, Issue[].class);
 
         return issues;
-    }
-
-    public void getIssuesbyUser(String projectId){
-
-        String login = "angron123";
-        String project = "Woodpecker";
-        String issuePath = "/api/admin/projects/" + projectId + "/issues?fields=id,customFields(value(login)),project(name),created,updated";
-
-        String response = this.gsonTransport.sendGetRequest(issuePath);
-        Issue[] issues = new Gson().fromJson(response, Issue[].class);
-
-        for (Issue i:issues) {
-
-            System.out.println(i.getCustomFields().get(3));
-
-           // if(i.getProject().equals(project)) {
-               // System.out.println("True");
-                System.out.println(i);
-                System.out.println(i.getProject());
-           // }
-////               // User user = i.getUpdater();
-////
-////               // user.toString();
-////              //  System.out.println(user.toString());
-////             //   System.out.println("----------------------");
-////             //   i.getReporter();
-//////                User user1 = i.getReporter();
-//////                System.out.println(user1.toString());
-////
-            }
-
     }
 
 
@@ -63,7 +38,12 @@ public class IssueService {
         String issuePath = "/api/admin/projects/" + projectId
             + "/issues?fields=idReadable,created,updated,resolved,numberInProject,project(name),summary,description,usesMarkdown,wikifiedDescription,reporter,updater,draftOwner,isDraft,visibility,votes,comments,commentsCount,tags,links,externalIssue,customFields,voters,watchers,attachments,subtasks,parent";
 
-        String response = this.gsonTransport.sendGetRequest(issuePath);
+        String response = null;
+        try {
+            response = this.gsonTransport.sendGetRequest(issuePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return new Gson().fromJson(response, Issue.class);
     }
