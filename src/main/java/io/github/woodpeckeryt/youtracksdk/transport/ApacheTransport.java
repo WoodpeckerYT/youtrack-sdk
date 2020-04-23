@@ -46,6 +46,8 @@ public final class ApacheTransport implements Transport {
                 result = EntityUtils.toString(entity);
             }
 
+            logger.debug("HttpResponse: {}", result);
+
             return result;
         } else {
             throw new IOException(response.getStatusLine().toString());
@@ -57,8 +59,8 @@ public final class ApacheTransport implements Transport {
         String result = "";
 
         try(
-            CloseableHttpClient client = HttpClients.createDefault();
-            ) {
+            CloseableHttpClient client = HttpClients.createDefault()
+        ) {
             HttpPost httpPost = new HttpPost(this.host + path);
             String requestData = new Gson().toJson(sendObject);
             StringEntity entity = new StringEntity(requestData);

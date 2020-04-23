@@ -4,35 +4,29 @@ import io.github.woodpeckeryt.youtracksdk.entities.YouTrack;
 import io.github.woodpeckeryt.youtracksdk.user.User;
 import io.github.woodpeckeryt.youtracksdk.user.UserFields;
 import io.github.woodpeckeryt.youtracksdk.user.UserService;
-import org.apache.http.HttpStatus;
+import mockit.Expectations;
+import mockit.Mock;
+import mockit.MockUp;
+import mockit.Mocked;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicStatusLine;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "javax.management.*", "javax.net.ssl.*"})
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({HttpClients.class})
 public class UserMethodsTest extends YouTrackProvider {
     private final static Logger logger = LoggerFactory.getLogger(UserMethodsTest.class);
-    
+
     @Test
     public void getUserInformation() throws IOException {
         YouTrack youTrack = super.get();
@@ -47,27 +41,43 @@ public class UserMethodsTest extends YouTrackProvider {
         assertEquals("rinat.muhamedgaliev", login);
     }
 
-    @Test(expected = IOException.class)
+    @Mocked
+    private CloseableHttpClient client;
+
+    @Mocked
+    private CloseableHttpResponse response;
+
+    @Mocked
+    private HttpUriRequest request;
+
+    @Test
     public void getUserInformationWithError() throws IOException {
         YouTrack youTrack = super.get();
 
-        PowerMockito.mockStatic(HttpClients.class);
-
         UserService userService = youTrack.getUserService();
 
-        CloseableHttpClient client = mock(CloseableHttpClient.class);
-        CloseableHttpResponse response = mock(CloseableHttpResponse.class);
+        new Expectations() {{
+            client.execute((HttpUriRequest) any);
+            result = response;
+        }};
 
-        when(HttpClients.createDefault()).thenReturn(client);
-        when(client.execute(any(HttpUriRequest.class))).thenReturn(response);
-        when(response.getStatusLine()).thenReturn(new BasicStatusLine(
+        new Expectations() {{
+            response.getStatusLine();
+            result = new BasicStatusLine(
                 new ProtocolVersion("HTTP", 1, 1),
                 401,
                 "Unauthorized"
-        ));
+            );
+        }};
 
-        Optional<User> user = userService.getMeInformation(UserFields.FULL_NAME.getFieldName(), UserFields.LOGIN.getFieldName());
+        new MockUp<HttpClients>() {
 
-        assertEquals(Optional.empty(), user);
+            @Mock
+            CloseableHttpClient createDefault() {
+                return client;
+            }
+        };
+
+        assertThrows(IOException.class, () -> userService.getMeInformation(UserFields.FULL_NAME.getFieldName(), UserFields.LOGIN.getFieldName()));
     }
 }

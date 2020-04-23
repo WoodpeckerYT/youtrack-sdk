@@ -1,5 +1,9 @@
 plugins {
     `java-library`
+    jacoco
+    pmd
+    `build-dashboard`
+    id("com.github.spotbugs") version "4.0.5"
 }
 
 repositories {
@@ -23,10 +27,10 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("org.slf4j:slf4j-api:1.7.30")
 
-    testImplementation("org.mockito:mockito-core:3.3.3")
-    testImplementation( "org.powermock:powermock-module-junit5:1.6.4")
-    testImplementation( "org.powermock:powermock-module-junit4:1.6.4")
-    testImplementation( "org.powermock:powermock-api-mockito2:2.0.7")
+    testImplementation("org.jmockit:jmockit:1.49")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
 }
 
 configurations {
@@ -41,12 +45,58 @@ sourceSets {
     }
 }
 
+val YT_HOST: String by project
+val YT_TOKEN: String by project
+
 tasks {
     test {
+        useJUnitPlatform()
         testLogging.showExceptions = true
+        jvmArgs("-javaagent:${classpath.find { it.name.contains("jmockit") }!!.absolutePath}")
+        environment("YT_HOST", YT_HOST)
+        environment("YT_TOKEN",YT_TOKEN)
     }
 
     wrapper {
         gradleVersion = "6.3"
     }
 }
+
+pmd {
+    isIgnoreFailures = true
+    toolVersion = "6.22.0"
+}
+
+spotbugs {
+    showProgress.set(true)
+    toolVersion.set("4.0.2")
+    ignoreFailures.set(true)
+
+    tasks.spotbugsMain {
+        reports.create("html") {
+            isEnabled = true
+            setStylesheet("fancy-hist.xsl")
+        }
+    }
+
+    tasks.spotbugsTest {
+        reports.create("html") {
+            isEnabled = true
+            setStylesheet("fancy-hist.xsl")
+        }
+    }
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = false
+        csv.isEnabled = false
+        html.isEnabled = true
+    }
+}
+
+tasks.buildDashboard
+
+
+
+
